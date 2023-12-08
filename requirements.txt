@@ -1,0 +1,9 @@
+Django==2.2
+
+keras
+tensorflow # Use the CPU version
+matplotlib==3.3.3; platform_system != 'Darwin' and platform_system != 'Windows'
+# other dependencies...
+
+mysql-connector-python==8.0.21
+# other dependencies...
