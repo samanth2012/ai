@@ -17,7 +17,7 @@ import mysql.connector
 def hello(request):
     return HttpResponse("Hello World")
 
-# Create your views here.
+
 
 
 def home(request):
@@ -26,13 +26,10 @@ def home(request):
 
 def sentimentanalasis(request):
      if request.method == 'POST':
-        val1 = request.POST['num1'] # Use get() to avoid MultiValueDictKeyError
+        val1 = request.POST.get('num1') 
 
-   
-        # Rest of your view logic
         custom_optimizer = adam.Adam(learning_rate=0.001, beta_1=0.9, beta_2=0.999, epsilon=1e-7, amsgrad=False)
 
-# Load the model with the custom optimizer
         loaded_model = load_model('moviereviews3.h5', custom_objects={'Adam': custom_optimizer}, compile=False)
         mydb = mysql.connector.connect(
   host ="192.168.55.104",
@@ -52,27 +49,19 @@ def sentimentanalasis(request):
             
         mycursor = mydb.cursor()
         sql_insert_data = "INSERT INTO predictions (results_of_predicted_sentiments) VALUES (%s)"
-# Execute the INSERT statement with the value of 'pred'
-        # Execute the INSERT statement with the value of 'pred'
-        # Execute the INSERT statement with the value of 'pred'
         mycursor.execute(sql_insert_data, (float(pred),))
 
 
 
-# Commit the changes to the database
         mydb.commit()
 
-# Close the cursor and connection
         mycursor.close()
         mydb.close()
 
-# Execute the INSERT statement with the value of 'pred'
-        
     
         return render(request, "result.html", {'result': pred,'state': sentiment})
      
 
      else:
-        # Handle the case when the view is accessed with a GET request
         return HttpResponse("Method Not Allowed", status=405)
     
